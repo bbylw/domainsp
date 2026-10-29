@@ -34,20 +34,22 @@ This project's UI design and color scheme is directly inspired by Pornhub's icon
 
 ### Technical Improvements
 
+- Data-driven architecture: all categories and links are stored in `links.json`, decoupled from HTML markup
 - Separated stylesheet (`style.css`) and script (`main.js`) shared by both pages
-- CSS custom properties for the color palette
-- Four responsive breakpoints (1200px / 768px / 480px / 360px)
-- Smooth anchor navigation with `history.pushState` and hash sync
+- Semantic card markup (`<a class="link-card">`) with `:focus-visible` keyboard navigation support
+- Smooth anchor navigation with `scroll-margin-top`, `IntersectionObserver` ScrollSpy, and `history.pushState` hash sync
+- Complete SEO & Open Graph metadata and CDN `preconnect` optimization
+- CSS custom properties for the color palette and streamlined responsive breakpoints (1200px / 768px / 480px / 360px)
 - Custom SVG favicon, no image assets required
-- Accessible cards: every anchor gets an `aria-label` from its heading
 
 ## 📂 Project Structure
 
 ```
-├── index.html      # Home page — 6 categories, 160 cards
-├── domains.html    # Free domain / DNS sub-page — 29 cards
+├── index.html      # Home page shell — top nav & semantic container
+├── domains.html    # Free domain / DNS sub-page shell
+├── links.json      # Centralized link data (6 categories / 160 home cards + 29 domain cards)
 ├── style.css       # Shared stylesheet for both pages
-├── main.js         # Shared behaviour: year, aria-labels, anchor nav
+├── main.js         # Shared behaviour: JSON rendering, ScrollSpy, anchor nav, footer year
 ├── favicon.svg     # Site icon
 └── README.md
 ```
@@ -63,7 +65,7 @@ This project's UI design and color scheme is directly inspired by Pornhub's icon
 | 云存储 | `cloud-storage` | 7 |
 | 电子邮箱 | `email` | 8 |
 
-The 实用工具 grid contains one internal card that links to `domains.html`. The sub-page itself is a single flat grid with no category headings.
+The 实用工具 grid contains one internal card (`"internal": true`) that links to `domains.html`. The sub-page itself is rendered from the `domains` array in `links.json`.
 
 ## 🚀 Deployment Options
 
@@ -93,36 +95,43 @@ The 实用工具 grid contains one internal card that links to `domains.html`. T
 
 ### Adding a New Link
 
-Cards use a wrapper `div` with the link as an absolutely positioned overlay, so the whole card is clickable:
+Append an entry to the target category's `links` array (or to the `domains` array) in `links.json`:
 
-```html
-<div class="link-card">
-  <a href="[URL]" target="_blank" rel="noopener noreferrer"></a>
-  <i class="[ICON-CLASS]"></i>
-  <h3>[TITLE]</h3>
-</div>
+```json
+{
+  "title": "[TITLE]",
+  "url": "[URL]",
+  "icon": "[ICON-CLASS]"
+}
 ```
 
-The `<a>` is empty on purpose — its text is set at runtime for screen readers from the `<h3>`.
+For internal links that should open in the same tab, add `"internal": true`. At runtime, `main.js` renders each item as a semantic `<a class="link-card">` element.
 
 ### Adding a New Category
 
-Add a section to `index.html` and a matching nav entry:
+1. Add a new category object to the `categories` array in `links.json`:
 
-```html
-<section id="[CATEGORY-ID]">
-  <h2 class="category-title">[CATEGORY-NAME]</h2>
-  <div class="link-grid">
-    <!-- link-card elements -->
-  </div>
-</section>
+```json
+{
+  "id": "[CATEGORY-ID]",
+  "title": "[CATEGORY-NAME]",
+  "links": [
+    {
+      "title": "[TITLE]",
+      "url": "[URL]",
+      "icon": "[ICON-CLASS]"
+    }
+  ]
+}
 ```
+
+2. Add a matching navigation item to `.top-nav` in `index.html`:
 
 ```html
 <li><a href="#[CATEGORY-ID]">[CATEGORY-NAME]</a></li>
 ```
 
-`main.js` picks up any `nav a` whose `href` contains `#` and wires up smooth scroll and active-state highlighting automatically.
+`main.js` automatically renders the new section and wires up smooth scrolling and ScrollSpy active-state highlighting.
 
 ### Changing Colors
 
@@ -139,9 +148,8 @@ All colors live in the `:root` block at the top of `style.css`:
 
 ## 📱 Browser Support
 
-- Modern browsers with CSS Grid support
+- Modern browsers with CSS Grid and `fetch` / `IntersectionObserver` support
 - Responsive down to 360px viewport width
-- Progressive enhancement: content is fully readable without JavaScript
 
 ## 🔒 Security
 
@@ -184,20 +192,22 @@ This project is open-source and available under the MIT License.
 
 ### 技术改进
 
-- 样式与脚本已分离为 `style.css` 和 `main.js`，两个页面共用
-- 使用 CSS 自定义属性管理配色
-- 四档响应式断点（1200px / 768px / 480px / 360px）
-- 锚点导航平滑滚动，配合 `history.pushState` 同步地址栏
-- 自绘 SVG 图标，不依赖任何图片资源
-- 卡片可访问性：每个链接的 `aria-label` 自动取自对应标题
+- 数据与视图解耦：所有分类与卡片数据集中在 `links.json` 中维护，由 `main.js` 动态渲染
+- 样式与脚本分离为 `style.css` 和 `main.js`，两个页面共用
+- 语义化卡片结构（`<a class="link-card">`），支持 `:focus-visible` 键盘无障碍导航
+- 锚点导航平滑滚动（带 `scroll-margin-top` 防遮挡），配合 `IntersectionObserver` 滚动监听（ScrollSpy）与 `history.pushState` 自动同步高亮和地址栏
+- 完善的 SEO 与 Open Graph 社交分享元数据，以及 CDN `preconnect` 预连接优化
+- 使用 CSS 自定义属性管理配色，精简四档响应式断点（1200px / 768px / 480px / 360px）
+- 自绘 SVG 图标，不依赖任何位图资源
 
 ## 📂 项目结构
 
 ```
-├── index.html      # 首页 — 6 个分类，160 张卡片
-├── domains.html    # 免费域名 / DNS 子页 — 29 张卡片
+├── index.html      # 首页骨架 — 顶部导航与语义化容器
+├── domains.html    # 免费域名 / DNS 子页骨架
+├── links.json      # 集中式链接数据源（首页 6 个分类 160 张卡片 + 子页 29 张卡片）
 ├── style.css       # 两个页面共用的样式表
-├── main.js         # 共用行为：年份、aria-label、锚点导航
+├── main.js         # 共用行为：JSON 数据渲染、ScrollSpy、锚点导航、年份更新
 ├── favicon.svg     # 站点图标
 └── README.md
 ```
@@ -213,7 +223,7 @@ This project is open-source and available under the MIT License.
 | 云存储 | `cloud-storage` | 7 |
 | 电子邮箱 | `email` | 8 |
 
-实用工具网格中有一张内部卡片指向 `domains.html`。该子页是单一平铺网格，不含分类标题。
+实用工具网格中有一张内部卡片（`"internal": true`）指向 `domains.html`。该子页的数据存储在 `links.json` 的 `domains` 数组中。
 
 ## 🚀 部署选项
 
@@ -243,36 +253,43 @@ This project is open-source and available under the MIT License.
 
 ### 添加新链接
 
-卡片采用「外层 `div` + 绝对定位链接覆盖」的结构，因此整张卡片都可点击：
+只需在 `links.json` 对应分类的 `links` 数组（或子页的 `domains` 数组）中新增一项：
 
-```html
-<div class="link-card">
-  <a href="[URL]" target="_blank" rel="noopener noreferrer"></a>
-  <i class="[图标类名]"></i>
-  <h3>[标题]</h3>
-</div>
+```json
+{
+  "title": "[标题]",
+  "url": "[URL]",
+  "icon": "[图标类名]"
+}
 ```
 
-`<a>` 标签内部刻意留空，其文字由脚本在运行时从 `<h3>` 读取并写入，供读屏软件使用。
+如果是站内跳转链接（无需新标签页打开），可额外加上 `"internal": true`。`main.js` 会在运行时将其渲染为语义化的 `<a class="link-card">` 元素。
 
 ### 添加新分类
 
-在 `index.html` 中新增一个 section，并在导航中加一条对应项：
+1. 在 `links.json` 的 `categories` 数组中新增一个分类对象：
 
-```html
-<section id="[分类ID]">
-  <h2 class="category-title">[分类名称]</h2>
-  <div class="link-grid">
-    <!-- link-card 元素 -->
-  </div>
-</section>
+```json
+{
+  "id": "[分类ID]",
+  "title": "[分类名称]",
+  "links": [
+    {
+      "title": "[标题]",
+      "url": "[URL]",
+      "icon": "[图标类名]"
+    }
+  ]
+}
 ```
+
+2. 在 `index.html` 的 `.top-nav` 导航栏中添加对应项：
 
 ```html
 <li><a href="#[分类ID]">[分类名称]</a></li>
 ```
 
-`main.js` 会自动识别所有 `href` 含 `#` 的 `nav a`，绑定平滑滚动与高亮状态，无需额外配置。
+`main.js` 会自动渲染该分类区块，并绑定平滑滚动与 ScrollSpy 滚动高亮状态。
 
 ### 修改配色
 
@@ -289,9 +306,8 @@ This project is open-source and available under the MIT License.
 
 ## 📱 浏览器支持
 
-- 支持具有 CSS Grid 功能的现代浏览器
+- 支持具有 CSS Grid、`fetch` 及 `IntersectionObserver` 功能的现代浏览器
 - 响应式适配至 360px 视口宽度
-- 渐进增强：关闭 JavaScript 后内容仍可正常阅读
 
 ## 🔒 安全性
 
