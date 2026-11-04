@@ -696,6 +696,11 @@
           "title": "Openverse",
           "url": "https://openverse.org/",
           "icon": "fa-brands fa-creative-commons"
+        },
+        {
+          "title": "黑客书架",
+          "url": "https://hackerbooks.qiaomu.ai/",
+          "icon": "fa-solid fa-book-bookmark"
         }
       ]
     },

@@ -28,8 +28,8 @@ This project's UI design and color scheme is directly inspired by Pornhub's icon
 
 ### Content
 
-- **160 link cards** across 6 categories on the home page
-- **30 domain / DNS links** on a dedicated sub-page
+- **161 link cards** across 6 categories on the home page
+- **31 domain / DNS links** on a dedicated sub-page
 - Every external link opens in a new tab with `rel="noopener noreferrer"`
 
 ### Technical Improvements
@@ -47,7 +47,7 @@ This project's UI design and color scheme is directly inspired by Pornhub's icon
 ```
 ├── index.html      # Home page shell — top nav & semantic container
 ├── domains.html    # Free domain / DNS sub-page shell
-├── links.json      # Centralized link data (6 categories / 160 home cards + 30 domain cards)
+├── links.json      # Centralized link data (6 categories / 161 home cards + 31 domain cards)
 ├── style.css       # Shared stylesheet for both pages
 ├── main.js         # Shared behaviour: JSON rendering, ScrollSpy, anchor nav, footer year
 ├── favicon.svg     # Site icon
@@ -60,7 +60,7 @@ This project's UI design and color scheme is directly inspired by Pornhub's icon
 | --- | --- | --- |
 | Ai搜索 | `ai-search` | 54 |
 | 托管社交 | `social` | 22 |
-| 实用工具 | `tools` | 60 |
+| 实用工具 | `tools` | 61 |
 | 科技资讯 | `tech-news` | 9 |
 | 云存储 | `cloud-storage` | 7 |
 | 电子邮箱 | `email` | 8 |
@@ -186,8 +186,8 @@ This project is open-source and available under the MIT License.
 
 ### 内容规模
 
-- 首页 **6 个分类、160 张链接卡片**
-- 独立子页收录 **30 个域名 / DNS 相关链接**
+- 首页 **6 个分类、161 张链接卡片**
+- 独立子页收录 **31 个域名 / DNS 相关链接**
 - 所有外部链接均在新标签页打开，并带 `rel="noopener noreferrer"`
 
 ### 技术改进
@@ -205,7 +205,7 @@ This project is open-source and available under the MIT License.
 ```
 ├── index.html      # 首页骨架 — 顶部导航与语义化容器
 ├── domains.html    # 免费域名 / DNS 子页骨架
-├── links.json      # 集中式链接数据源（首页 6 个分类 160 张卡片 + 子页 30 张卡片）
+├── links.json      # 集中式链接数据源（首页 6 个分类 161 张卡片 + 子页 31 张卡片）
 ├── style.css       # 两个页面共用的样式表
 ├── main.js         # 共用行为：JSON 数据渲染、ScrollSpy、锚点导航、年份更新
 ├── favicon.svg     # 站点图标
@@ -218,7 +218,7 @@ This project is open-source and available under the MIT License.
 | --- | --- | --- |
 | Ai搜索 | `ai-search` | 54 |
 | 托管社交 | `social` | 22 |
-| 实用工具 | `tools` | 60 |
+| 实用工具 | `tools` | 61 |
 | 科技资讯 | `tech-news` | 9 |
 | 云存储 | `cloud-storage` | 7 |
 | 电子邮箱 | `email` | 8 |
