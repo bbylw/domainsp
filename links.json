@@ -235,6 +235,11 @@
           "icon": "fa-solid fa-code"
         },
         {
+          "title": "deepai",
+          "url": "https://deepai.org/",
+          "icon": "fa-solid fa-brain"
+        },
+        {
           "title": "硅基流动",
           "url": "https://siliconflow.cn/",
           "icon": "fa-brands fa-confluence"
