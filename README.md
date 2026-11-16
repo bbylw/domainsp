@@ -28,26 +28,29 @@ This project's UI design and color scheme is directly inspired by Pornhub's icon
 
 ### Content
 
-- **161 link cards** across 6 categories on the home page
+- **163 link cards** across 6 categories on the home page
 - **32 domain / DNS links** on a dedicated sub-page
 - Every external link opens in a new tab with `rel="noopener noreferrer"`
 
 ### Technical Improvements
 
-- Data-driven architecture: all categories and links are stored in `links.json`, decoupled from HTML markup
-- Separated stylesheet (`style.css`) and script (`main.js`) shared by both pages
-- Semantic card markup (`<a class="link-card">`) with `:focus-visible` keyboard navigation support
-- Smooth anchor navigation with `scroll-margin-top`, `IntersectionObserver` ScrollSpy, and `history.pushState` hash sync
-- Complete SEO & Open Graph metadata and CDN `preconnect` optimization
-- CSS custom properties for the color palette and streamlined responsive breakpoints (1200px / 768px / 480px / 360px)
-- Custom SVG favicon, no image assets required
+- Guided by [GoogleChrome/modern-web-guidance-src](https://github.com/GoogleChrome/modern-web-guidance-src) for modern HTML, CSS, JavaScript, accessibility, performance, and security best practices
+- Data-driven architecture: all categories and links are stored in `links.json`, decoupled from HTML markup and preloaded via `<link rel="preload" as="fetch">` with `<script defer fetchpriority="high">`
+- Same-origin navigation accelerated with `<script type="speculationrules">` (`prefetch` / `prerender`)
+- Separated stylesheet (`style.css`) organized with `@layer`, `:root` design tokens, native CSS nesting, and logical properties shared by both pages
+- Semantic card markup (`<a class="link-card">`) rendered safely via `replaceChildren()` (no `innerHTML` sinks) and URL protocol validation
+- Keyboard and assistive technology accessibility: skip link (`跳转到主要内容`), sequential heading hierarchy, `:focus-visible` outlines, `aria-current` state sync, `<meta name="text-scale" content="scale">`, `@media (prefers-reduced-motion)` gating, and `@media (forced-colors: active)` support
+- Native CSS ScrollSpy (`scroll-target-group: auto` & `:target-current`) with `IntersectionObserver` fallback and `scrollIntoView()` promise/idle completion handling
+- Native dark-mode chrome (`<meta name="color-scheme" content="dark">` & `color-scheme: dark`) to prevent initial white flashes
+- Complete SEO & Open Graph metadata, CDN `preconnect`, and Subresource Integrity (`integrity="sha384-..."`) + `strict-origin-when-cross-origin` referrer policy on Font Awesome `@7.3.1`
+- Custom SVG favicon, no bitmap image assets required
 
 ## 📂 Project Structure
 
 ```
 ├── index.html      # Home page shell — top nav & semantic container
 ├── domains.html    # Free domain / DNS sub-page shell
-├── links.json      # Centralized link data (6 categories / 161 home cards + 32 domain cards)
+├── links.json      # Centralized link data (6 categories / 163 home cards + 32 domain cards)
 ├── style.css       # Shared stylesheet for both pages
 ├── main.js         # Shared behaviour: JSON rendering, ScrollSpy, anchor nav, footer year
 ├── favicon.svg     # Site icon
@@ -58,8 +61,8 @@ This project's UI design and color scheme is directly inspired by Pornhub's icon
 
 | Category | ID | Cards |
 | --- | --- | --- |
-| Ai搜索 | `ai-search` | 54 |
-| 托管社交 | `social` | 22 |
+| Ai搜索 | `ai-search` | 55 |
+| 托管社交 | `social` | 23 |
 | 实用工具 | `tools` | 61 |
 | 科技资讯 | `tech-news` | 9 |
 | 云存储 | `cloud-storage` | 7 |
@@ -186,18 +189,21 @@ This project is open-source and available under the MIT License.
 
 ### 内容规模
 
-- 首页 **6 个分类、161 张链接卡片**
+- 首页 **6 个分类、163 张链接卡片**
 - 独立子页收录 **32 个域名 / DNS 相关链接**
 - 所有外部链接均在新标签页打开，并带 `rel="noopener noreferrer"`
 
 ### 技术改进
 
-- 数据与视图解耦：所有分类与卡片数据集中在 `links.json` 中维护，由 `main.js` 动态渲染
-- 样式与脚本分离为 `style.css` 和 `main.js`，两个页面共用
-- 语义化卡片结构（`<a class="link-card">`），支持 `:focus-visible` 键盘无障碍导航
-- 锚点导航平滑滚动（带 `scroll-margin-top` 防遮挡），配合 `IntersectionObserver` 滚动监听（ScrollSpy）与 `history.pushState` 自动同步高亮和地址栏
-- 完善的 SEO 与 Open Graph 社交分享元数据，以及 CDN `preconnect` 预连接优化
-- 使用 CSS 自定义属性管理配色，精简四档响应式断点（1200px / 768px / 480px / 360px）
+- 引入并遵循 [GoogleChrome/modern-web-guidance-src](https://github.com/GoogleChrome/modern-web-guidance-src) 现代 Web 开发指南进行全面优化
+- 数据与视图解耦：所有分类与卡片数据集中在 `links.json` 中维护，并通过 `<link rel="preload" as="fetch">` 与 `<script defer fetchpriority="high">` 消除加载瀑布流
+- 引入 `<script type="speculationrules">` 对站内页面（`index.html` ↔ `domains.html`）进行 `prefetch` / `prerender` 预加载加速
+- 样式与脚本分离为 `style.css` 和 `main.js` 共用，样式采用 `@layer` 级联层、`:root` 设计令牌、原生 CSS 嵌套与逻辑属性管理
+- 语义化卡片结构（`<a class="link-card">`），通过 `replaceChildren()` 安全挂载（无 `innerHTML` 注入风险）并校验链接协议
+- 无障碍与自适应能力：键盘跳过链接（`跳转到主要内容`）、连续标题层级、`:focus-visible` 焦点指示、`aria-current` 状态同步、`<meta name="text-scale" content="scale">` 系统字体缩放、`@media (prefers-reduced-motion)` 减弱动画及 `@media (forced-colors: active)` 高对比度模式
+- 优先采用原生 CSS ScrollSpy（`scroll-target-group: auto` 与 `:target-current`），配合 `IntersectionObserver` 降级兼容及 `scrollIntoView()` 异步完成控制
+- 配置 `<meta name="color-scheme" content="dark">` 与 `color-scheme: dark`，使原生滚动条及视口画布保持暗色且避免白屏闪烁
+- 完善的 SEO 与 Open Graph 社交分享元数据，为 Font Awesome `@7.3.1` 配置 CDN `preconnect`、SRI 完整性校验（`integrity="sha384-..."`）及 `strict-origin-when-cross-origin` 来源策略
 - 自绘 SVG 图标，不依赖任何位图资源
 
 ## 📂 项目结构
@@ -205,7 +211,7 @@ This project is open-source and available under the MIT License.
 ```
 ├── index.html      # 首页骨架 — 顶部导航与语义化容器
 ├── domains.html    # 免费域名 / DNS 子页骨架
-├── links.json      # 集中式链接数据源（首页 6 个分类 161 张卡片 + 子页 32 张卡片）
+├── links.json      # 集中式链接数据源（首页 6 个分类 163 张卡片 + 子页 32 张卡片）
 ├── style.css       # 两个页面共用的样式表
 ├── main.js         # 共用行为：JSON 数据渲染、ScrollSpy、锚点导航、年份更新
 ├── favicon.svg     # 站点图标
@@ -216,8 +222,8 @@ This project is open-source and available under the MIT License.
 
 | 分类 | ID | 卡片数 |
 | --- | --- | --- |
-| Ai搜索 | `ai-search` | 54 |
-| 托管社交 | `social` | 22 |
+| Ai搜索 | `ai-search` | 55 |
+| 托管社交 | `social` | 23 |
 | 实用工具 | `tools` | 61 |
 | 科技资讯 | `tech-news` | 9 |
 | 云存储 | `cloud-storage` | 7 |
