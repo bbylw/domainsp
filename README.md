@@ -34,7 +34,7 @@ This project's UI design and color scheme is directly inspired by Pornhub's icon
 
 ### Technical Improvements
 
-- Guided by [GoogleChrome/modern-web-guidance-src](https://github.com/GoogleChrome/modern-web-guidance-src) for modern HTML, CSS, JavaScript, accessibility, performance, and security best practices
+- Guided by [GoogleChrome/modern-web-guidance](https://github.com/GoogleChrome/modern-web-guidance) for modern HTML, CSS, JavaScript, accessibility, performance, and security best practices
 - Data-driven architecture: all categories and links are stored in `links.json`, decoupled from HTML markup and preloaded via `<link rel="preload" as="fetch">` with `<script defer fetchpriority="high">`
 - Same-origin navigation accelerated with `<script type="speculationrules">` (`prefetch` / `prerender`)
 - Separated stylesheet (`style.css`) organized with `@layer`, `:root` design tokens, native CSS nesting, and logical properties shared by both pages
@@ -195,7 +195,7 @@ This project is open-source and available under the MIT License.
 
 ### 技术改进
 
-- 引入并遵循 [GoogleChrome/modern-web-guidance-src](https://github.com/GoogleChrome/modern-web-guidance-src) 现代 Web 开发指南进行全面优化
+- 引入并遵循 [GoogleChrome/modern-web-guidance](https://github.com/GoogleChrome/modern-web-guidance) 现代 Web 开发指南进行全面优化
 - 数据与视图解耦：所有分类与卡片数据集中在 `links.json` 中维护，并通过 `<link rel="preload" as="fetch">` 与 `<script defer fetchpriority="high">` 消除加载瀑布流
 - 引入 `<script type="speculationrules">` 对站内页面（`index.html` ↔ `domains.html`）进行 `prefetch` / `prerender` 预加载加速
 - 样式与脚本分离为 `style.css` 和 `main.js` 共用，样式采用 `@layer` 级联层、`:root` 设计令牌、原生 CSS 嵌套与逻辑属性管理
