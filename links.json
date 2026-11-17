@@ -703,6 +703,11 @@
           "icon": "fa-solid fa-thumbtack"
         },
         {
+          "title": "sms24免费接码",
+          "url": "https://sms24.me/",
+          "icon": "fa-solid fa-comment-sms"
+        },
+        {
           "title": "Openverse",
           "url": "https://openverse.org/",
           "icon": "fa-brands fa-creative-commons"
