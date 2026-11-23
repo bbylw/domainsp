@@ -965,6 +965,11 @@
       "icon": "fa-solid fa-code"
     },
     {
+      "title": "ipv64",
+      "url": "https://ipv64.net/",
+      "icon": "fa-solid fa-server"
+    },
+    {
       "title": "Zerexa Domains 免费域名",
       "url": "https://nic.fj.kg/",
       "icon": "fa-solid fa-globe"
